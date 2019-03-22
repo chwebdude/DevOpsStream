@@ -17,7 +17,10 @@
             "id": "stream-hub",
             "type": "ms.vss-web.hub",
             "targets": [
-                "ms.vss-overview-web.overview-hub-group"
+                "ms.vss-work-web.work-hub-group",
+                "ms.vss-web.home-hub-group",
+                "ms.vss-web.project-admin-hub-groups-collection",
+                "ms.vss-web.project-hub-groups-collection"
             ],
             "properties": {
                 "name": "Stream",
