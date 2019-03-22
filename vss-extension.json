@@ -1,0 +1,67 @@
+{
+    "manifestVersion": 1,
+    "id": "dev-ops-stream",
+    "publisher": "chwebdude",
+    "version": "0.0.1",
+    "name": "DevOps Stream",
+    "description": "A hub which provides a news stream/feed",
+    "public": false,
+    "categories": ["Azure Boards"],
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services.Cloud"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "stream-hub",
+            "type": "ms.vss-web.hub",
+            "targets": [
+                "ms.vss-web.home-hub-group"
+            ],
+            "properties": {
+                "name": "Stream",
+                "uri": "static/stream-hub.html",
+                "iconAsset": "chwebdude.dev-ops-stream/static/images/icon.png",
+                "_sharedData": {
+                    "assets": [
+                        "chwebdude.dev-ops-stream/static/images/icon.png"
+                    ]
+                }
+            }
+        }
+    ],
+    "files": [
+        {
+            "path": "static",
+            "addressable": true
+        },
+        {
+            "path": "node_modules/vss-web-extension-sdk/lib",
+            "addressable": true,
+            "packagePath": "lib"
+        },
+        {
+            "path": "dist",
+            "addressable": true
+        }
+    ],
+    "scopes": [
+        "vso.build",
+        "vso.agentpools",
+        "vso.extension",
+        "vso.graph",
+        "vso.notification",
+        "vso.packaging",
+        "vso.project",
+        "vso.release",
+        "vso.symbols",
+        "vso.taskgroups_read",
+        "vso.dashboards",
+        "vso.test",
+        "vso.profile",
+        "vso.variablegroups_read",
+        "vso.wiki",
+        "vso.work"
+    ]
+}
