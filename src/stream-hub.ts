@@ -62,11 +62,12 @@ async function render() {
     // Generate output
     var html = "";
     builds.forEach(el => {
-        html += Mustache.render(template, el);
+        html += Mustache.render(template, el);        
     });
 
     // Show data
     $("#target").html(html);
+    console.log(html);
 }
 render();
 
