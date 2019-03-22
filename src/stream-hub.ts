@@ -25,7 +25,6 @@ async function getBuilds(): Promise<Element[]> {
                     additionalInfo: Mustache.render(template, element)
                 }
             );
-            console.info("result", element.result.toString);
         });
 
     } catch (error) {
