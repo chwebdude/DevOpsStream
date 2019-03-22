@@ -21,7 +21,13 @@
             ],
             "properties": {
                 "name": "Stream",
-                "uri": "stream-hub.html"
+                "uri": "stream-hub.html",
+                "iconAsset": "chwebdude.dev-ops-stream/images/icon.png",
+                "_sharedData": {
+                    "assets": [
+                        "chwebdude.dev-ops-stream/images/icon.png"
+                    ]
+                }
             }
         }
     ],
@@ -34,6 +40,10 @@
             "path": "node_modules/vss-web-extension-sdk/lib",
             "addressable": true,
             "packagePath": "lib"
+        },
+        {
+            "path": "images/icon.png",
+            "addressable": true
         }
     ]
 }
