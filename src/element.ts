@@ -5,4 +5,5 @@ export class Element {
     public imageUrl!: string;
     public action!: string;
     public user!: string;
+    public additionalInfo: string | undefined;
 }

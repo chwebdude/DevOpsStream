@@ -12,14 +12,17 @@ async function getBuilds(): Promise<Element[]> {
     var res: Element[] = [];
     var client = RestClient.getClient();
     try {
-        var builds: Build[] = await client.getBuilds(projectId);
+        var template = await $.get("templates/build.html");
+        var builds: Build[] = await client.getBuilds(projectId);        
         builds.forEach(element => {
+
             res.push(
                 {
                     action: "Build",
                     date: element.lastChangedDate.toLocaleDateString() + element.lastChangedDate.toLocaleTimeString(),
                     imageUrl: element.requestedBy.imageUrl,
-                    user: element.requestedBy.displayName
+                    user: element.requestedBy.displayName,
+                    additionalInfo: Mustache.render(template, element)
                 }
             );
             console.info("result", element.result.toString);
