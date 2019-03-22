@@ -1,7 +1,16 @@
 <li class="media my-2">
-    <img src="{{requestedFor.imageUrl}}" class="mr-3" alt="...">
+    <img src="{{requestedBy.imageUrl}}" class="mr-3" alt="...">
     <div class="media-body">
         <h6 class="mt-0 mb-1">{{requestedBy.displayName}} {{definition.name}}</h6>
         {{buildNumber}}
     </div>
 </li>
+
+<li class="media my-2 mx-1">
+        <img src="{{requestedBy.imageUrl}}" class="mr-3 figure-img rounded-circle" width="44" alt="...">
+        <div class="media-body">
+            <span class="text-secondary">{{lastChangedDate}}</span>
+            <p class="mt-0 mb-0"><strong>Build</strong> <strong><a href="">{{definition.name}}</a></strong> <a href="{{_links.web.href}}">{{buildNumber}}</a> <span class="text-success">{{result}}</span> for {{repository.id}} {{sourceBranch}}</p>
+            chwebdude
+        </div>
+    </li>
