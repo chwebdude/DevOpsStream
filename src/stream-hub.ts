@@ -10,7 +10,7 @@ var client = RestClient.getClient();
 client.getBuilds(projectId)
     .then(b => {        
         var builds = "";
-        $('../static/templates.build.html', (buildTemplate: string) => {
+        $.get('templates/build.html', (buildTemplate: string) => {
             b.forEach(element => {
                 builds += Mustache.render(buildTemplate, element);
             });
