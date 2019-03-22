@@ -1,7 +1,7 @@
-<li class="media">
-    <img src="..." class="mr-3" alt="...">
+<li class="media my-2">
+    <img src="{{requestedFor.imageUrl}}" class="mr-3" alt="...">
     <div class="media-body">
-        <h5 class="mt-0 mb-1">{{definition.name}}</h5>
+        <h5 class="mt-0 mb-1">{{requestedBy.displayName}} {{definition.name}}</h5>
         {{buildNumber}}
     </div>
 </li>
