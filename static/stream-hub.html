@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-    <script src="lib/VSS.SDK.min.js"></script>
+    <script src="../lib/VSS.SDK.min.js"></script>
     <script type="text/javascript">
         VSS.init({
             usePlatformStyles: true,
             usePlatformScripts: true
         });
-        VSS.ready(function() {
-            document.getElementById("name").innerText = VSS.getWebContext().user.name;            
+        VSS.ready(function () {
+            document.getElementById("name").innerText = VSS.getWebContext().user.name;
+            VSS.require(["dist/stream-hub"], function (app) {
+
+            });
         });
     </script>
 </head>
-<body>        
+
+<body>
     <h1>Hello, <span id="name"></span></h1>
 </body>
+
 </html>
