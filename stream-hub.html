@@ -2,17 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <script src="lib/VSS.SDK.min.js"></script>
-    <style>
-        body {
-            color: white;
-            margin: 10px;    
-            font-family: "Segoe UI VSS (Regular)","-apple-system",BlinkMacSystemFont,"Segoe UI",sans-serif;
-        }
-    </style>
     <script type="text/javascript">
-        VSS.init();
+        VSS.init({
+            usePlatformStyles: true,
+            usePlatformScripts: true
+        });
         VSS.ready(function() {
-            document.getElementById("name").innerText = VSS.getWebContext().user.name;
+            document.getElementById("name").innerText = VSS.getWebContext().user.name;            
         });
     </script>
 </head>
