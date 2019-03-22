@@ -2,6 +2,8 @@
 import RestClient = require("TFS/Build/RestClient");
 import Mustache = require("mustache");
 import { Element } from "./element";
+import { ContractFieldsMetadata } from "VSS/Serialization";
+import { Build } from "TFS/Build/Contracts";
 
 var projectId = VSS.getWebContext().project.id;
 
@@ -10,15 +12,17 @@ async function getBuilds(): Promise<Element[]> {
     var res: Element[] = [];
     var client = RestClient.getClient();
     try {
-
-        var builds: any[] = await client.getBuilds(projectId);
-        console.log("builds", builds);
-
-        var template: string = await $.get('templates/build.html');
-        console.log("template", template);
+        var builds: Build[] = await client.getBuilds(projectId);
         builds.forEach(element => {
-            var html = Mustache.render(template, element);
-            res.push(new Element(html, element.lastChangedDate));
+            res.push(
+                {
+                    action: "Build",
+                    date: element.lastChangedDate.toLocaleDateString() + element.lastChangedDate.toLocaleTimeString(),
+                    imageUrl: element.requestedBy.imageUrl,
+                    user: element.requestedBy.displayName
+                }
+            );
+            console.info("result", element.result.toString);
         });
 
     } catch (error) {
@@ -31,11 +35,17 @@ async function getBuilds(): Promise<Element[]> {
 
 async function render() {
     var builds = await getBuilds();
+    var template = await $.get("templates/element.html");
+    
     // Todo: Sort data
+    
+    // Generate output
     var html = "";
     builds.forEach(el => {
-        html += el.html;
+        html += Mustache.render(template, el);
     });
+
+    // Show data
     $("#target").html(html);
 }
 render();
