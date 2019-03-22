@@ -2,7 +2,7 @@
         <img src="{{requestedBy.imageUrl}}" class="mr-3 figure-img rounded-circle" width="44" alt="...">
         <div class="media-body">
             <span class="text-secondary">{{lastChangedDate}}</span>
-            <p class="mt-0 mb-0"><strong>Build</strong> <strong><a href="">{{definition.name}}</a></strong> <a href="{{_links.web.href}}">{{buildNumber}}</a> <span class="text-success">{{result}}</span> for {{repository.id}} {{sourceBranch}}</p>
-            chwebdude
+            <p class="mt-0 mb-0"><strong>Build</strong> <strong>{{definition.name}}</strong> <a target="_parent" href="{{_links.web.href}}">{{buildNumber}}</a> <span class="text-success">{{result}}</span> for {{repository.id}} {{sourceBranch}}</p>
+            {{requestedFor.displayName}}
         </div>
     </li>
