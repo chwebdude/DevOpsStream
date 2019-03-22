@@ -38,7 +38,7 @@ async function getBuilds(): Promise<Element[]> {
             res.push(
                 {
                     action: "Build",
-                    date: element.lastChangedDate.toLocaleDateString() + element.lastChangedDate.toLocaleTimeString(),
+                    date: element.lastChangedDate,
                     imageUrl: element.requestedBy.imageUrl,
                     user: element.requestedBy.displayName,
                     additionalInfo: Mustache.render(template, element)
@@ -61,8 +61,9 @@ async function render() {
 
     // Generate output
     var html = "";
-    builds.forEach(el => {
-        html += Mustache.render(template, el);        
+    builds.forEach((el: any) => {
+        el["dateStr"] = el.date.toLocaleDateString() + " " + el.date.toLocaleTimeString();
+        html += Mustache.render(template, el);
     });
 
     // Show data
