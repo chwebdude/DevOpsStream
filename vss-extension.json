@@ -21,11 +21,11 @@
             ],
             "properties": {
                 "name": "Stream",
-                "uri": "stream-hub.html",
-                "iconAsset": "chwebdude.dev-ops-stream/images/icon.png",
+                "uri": "static/stream-hub.html",
+                "iconAsset": "chwebdude.dev-ops-stream/static/images/icon.png",
                 "_sharedData": {
                     "assets": [
-                        "chwebdude.dev-ops-stream/images/icon.png"
+                        "chwebdude.dev-ops-stream/static/images/icon.png"
                     ]
                 }
             }
@@ -33,17 +33,13 @@
     ],
     "files": [
         {
-            "path": "stream-hub.html",
+            "path": "static",
             "addressable": true
         },
         {
             "path": "node_modules/vss-web-extension-sdk/lib",
             "addressable": true,
             "packagePath": "lib"
-        },
-        {
-            "path": "images/icon.png",
-            "addressable": true
         }
     ]
 }
