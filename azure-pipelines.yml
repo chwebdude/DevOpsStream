@@ -23,3 +23,17 @@ steps:
 
 - task: ms-devlabs.vsts-developer-tools-build-tasks.package-extension-build-task.PackageVSTSExtension@1
   displayName: 'Package Extension: vss-extension.json'
+
+steps:
+- task: ms-devlabs.vsts-developer-tools-build-tasks.publish-extension-build-task.PublishExtension@1
+  displayName: 'Publish Extension'
+  inputs:
+    connectedServiceName: Marketplace
+    # extensionName: 'dependency-checker-dev'
+    # extensionVersion: '$(Build.BuildNumber)'
+    # updateTasksId: true
+    extensionVisibility: private
+    shareWith: webdude
+    noWaitValidation: true
+  continueOnError: true
+  # condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
