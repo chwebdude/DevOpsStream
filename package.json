@@ -7,7 +7,6 @@
   "author": "Fabrice Andréïs <7746357+chwebdude@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
-    "javascript-time-ago": "^2.0.1",
     "mustache": "^3.0.1",
     "vss-web-extension-sdk": "^5.141.0"
   },

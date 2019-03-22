@@ -2,10 +2,8 @@
 import RestClient = require("TFS/Build/RestClient");
 import Mustache = require("mustache");
 import { Element } from "./element";
-import TimeAgo from 'javascript-time-ago'
 
 var projectId = VSS.getWebContext().project.id;
-const timeAgo = new TimeAgo('en-US')
 
 
 async function getBuilds(): Promise<Element[]> {
@@ -19,7 +17,6 @@ async function getBuilds(): Promise<Element[]> {
         var template: string = await $.get('templates/build.html');
         console.log("template", template);
         builds.forEach(element => {
-            element.timeAgo = timeAgo.format(element.lastChangedDate);
             var html = Mustache.render(template, element);
             res.push(new Element(html, element.lastChangedDate));
         });
