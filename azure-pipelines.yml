@@ -1,0 +1,32 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+
+- task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@2
+  displayName: 'Use Yarn 1.x'
+  inputs:
+    checkLatest: true
+
+- task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@2
+  displayName: 'Yarn  restore'
+
+- task: ms-devlabs.vsts-developer-tools-build-tasks.package-extension-build-task.PackageVSTSExtension@1
+  displayName: 'Package Extension: vss-extension.json'
+  inputs:
+    rootFolder: 'vss-extension.json'
