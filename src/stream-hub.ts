@@ -2,18 +2,19 @@
 import RestClient = require("TFS/Build/RestClient");
 import Mustache = require("mustache");
 import { Element } from "./element";
+import { async } from "q";
 
 var projectId = VSS.getWebContext().project.id;
 
 
-async function getBuilds() {
-     var res: Element[] = [];
+async function getBuilds(): Promise<Element[]> {
+    var res: Element[] = [];
     var client = RestClient.getClient();
     try {
 
         var builds: any[] = await client.getBuilds(projectId);
         console.log("builds", builds);
-        
+
         var template: string = await $.get('templates/build.html');
         console.log("template", template);
         builds.forEach(element => {
@@ -29,12 +30,14 @@ async function getBuilds() {
     return res;
 }
 
+async function render() {
+    var builds = await getBuilds();
+    // Todo: Sort data
+    var html = "";
+    builds.forEach(el => {
+        html += el.html;
+    });
+    $("#target").html(html);
+}
+render();
 
-getBuilds();
-// VSS.require(["VSS/Service", "TFS/Build/RestClient"], (service: any, api: any) => {
-//     console.log("service", service);
-//     console.log("api", api);
-//     // VSS.getAccessToken().then(o => {console.log(o)});
-//     var witClient = service.getCollectionClient(api.WorkItemTrackingHttpClient);
-//     console.log(witClient);
-// });
