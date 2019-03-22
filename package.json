@@ -7,6 +7,10 @@
   "author": "Fabrice Andréïs <7746357+chwebdude@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
+    "mustache": "^3.0.1",
     "vss-web-extension-sdk": "^5.141.0"
+  },
+  "devDependencies": {
+    "@types/mustache": "^0.8.32"
   }
 }

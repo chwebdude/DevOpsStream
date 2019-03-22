@@ -1,13 +1,20 @@
 import RestClient = require("TFS/Build/RestClient");
+import Mustache = require("mustache");
 
 var projectId = VSS.getWebContext().project.id;
 
+
+
+
 var client = RestClient.getClient();
 client.getBuilds(projectId)
-    .then(b => {
-        console.log(b);
-        b.forEach(element => {
-            console.log(element.definition.name);
+    .then(b => {        
+        var builds = "";
+        $('../static/templates.build.html', (buildTemplate: string) => {
+            b.forEach(element => {
+                builds += Mustache.render(buildTemplate, element);
+            });
+            $("#target").html(builds);
         });
     });
 
