@@ -2,8 +2,7 @@
 import RestClient = require("TFS/Build/RestClient");
 import Mustache = require("mustache");
 import { Element } from "./element";
-import { ContractFieldsMetadata } from "VSS/Serialization";
-import { Build } from "TFS/Build/Contracts";
+import { Build, BuildResult } from "TFS/Build/Contracts";
 
 var projectId = VSS.getWebContext().project.id;
 
@@ -15,7 +14,7 @@ async function getBuilds(): Promise<Element[]> {
         var template = await $.get("templates/build.html");
         var builds: Build[] = await client.getBuilds(projectId);        
         builds.forEach(element => {
-
+            element["resultString"] = BuildResult[element.result];
             res.push(
                 {
                     action: "Build",
@@ -31,7 +30,6 @@ async function getBuilds(): Promise<Element[]> {
         console.error(error);
     }
 
-    console.log(res);
     return res;
 }
 
