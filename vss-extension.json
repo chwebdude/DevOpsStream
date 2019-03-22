@@ -1,0 +1,39 @@
+{
+    "manifestVersion": 1,
+    "id": "dev-ops-stream",
+    "publisher": "chwebdude",
+    "version": "0.0.1",
+    "name": "DevOps Stream",
+    "description": "A hub which provides a news stream/feed",
+    "public": false,
+    "categories": ["Azure Boards"],
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services.Cloud"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "stream-hub",
+            "type": "ms.vss-web.hub",
+            "targets": [
+                "ms.vss-work-web.work-hub-group"
+            ],
+            "properties": {
+                "name": "Stream",
+                "uri": "stream-hub.html"
+            }
+        }
+    ],
+    "files": [
+        {
+            "path": "stream-hub.html",
+            "addressable": true
+        },
+        {
+            "path": "node_modules/vss-web-extension-sdk/lib",
+            "addressable": true,
+            "packagePath": "lib"
+        }
+    ]
+}

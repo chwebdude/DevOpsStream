@@ -1,0 +1,12 @@
+{
+  "name": "DevOpsStream",
+  "version": "1.0.0",
+  "description": "A stream view for Azure DevOps",
+  "main": "index.js",
+  "repository": "https://github.com/chwebdude/DevOpsStream.git",
+  "author": "Fabrice Andréïs <7746357+chwebdude@users.noreply.github.com>",
+  "license": "MIT",
+  "dependencies": {
+    "vss-web-extension-sdk": "^5.141.0"
+  }
+}
