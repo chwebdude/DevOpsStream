@@ -12,9 +12,26 @@ async function getBuilds(): Promise<Element[]> {
     var client = RestClient.getClient();
     try {
         var template = await $.get("templates/build.html");
-        var builds: Build[] = await client.getBuilds(projectId);        
+        var builds: Build[] = await client.getBuilds(projectId);
         builds.forEach(element => {
             element["resultString"] = BuildResult[element.result];
+
+            switch (element.result) {
+
+                case BuildResult.Succeeded:
+                    element["resultStyle"] = "text-success"
+                    break;
+                case BuildResult.PartiallySucceeded:
+                    element["resultStyle"] = "text-warning"
+                    break;
+                case BuildResult.None:
+                case BuildResult.Failed:
+                case BuildResult.Canceled:
+                    element["resultStyle"] = "text-danger"
+                    break;
+
+            }
+
             res.push(
                 {
                     action: "Build",
@@ -36,9 +53,9 @@ async function getBuilds(): Promise<Element[]> {
 async function render() {
     var builds = await getBuilds();
     var template = await $.get("templates/element.html");
-    
+
     // Todo: Sort data
-    
+
     // Generate output
     var html = "";
     builds.forEach(el => {
