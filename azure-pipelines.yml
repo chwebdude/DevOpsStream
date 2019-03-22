@@ -26,6 +26,9 @@ steps:
 - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@2
   displayName: 'Yarn  restore'
 
+- task: ms-devlabs.vsts-developer-tools-build-tasks.tfx-installer-build-task.TfxInstaller@1
+  displayName: 'Use Node CLI for Azure DevOps: v0.6.x'
+
 - task: ms-devlabs.vsts-developer-tools-build-tasks.package-extension-build-task.PackageVSTSExtension@1
   displayName: 'Package Extension: vss-extension.json'
   inputs:
