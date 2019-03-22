@@ -31,6 +31,10 @@ steps:
 - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@2
   displayName: 'Yarn  restore'
 
+
+- task: bool.compile-type-script.compile-type-script-task.compile-type-script@1
+  displayName: 'Compile TypeScript buildtab'  
+
 - task: ms-devlabs.vsts-developer-tools-build-tasks.package-extension-build-task.PackageVSTSExtension@1
   displayName: 'Package Extension: vss-extension.json'
 
