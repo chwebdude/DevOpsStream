@@ -45,5 +45,23 @@
             "path": "dist",
             "addressable": true
         }
+    ],
+    "scopes": [
+        "vso.build",
+        "vso.agentpools",
+        "vso.extension",
+        "vso.graph",
+        "vso.notification",
+        "vso.packaging",
+        "vso.project",
+        "vso.release",
+        "vso.symbols",
+        "vso.taskgroups_read",
+        "vso.dashboards",
+        "vso.test",
+        "vso.profile",
+        "vso.variablegroups_read",
+        "vso.wiki",
+        "vso.work"
     ]
 }
