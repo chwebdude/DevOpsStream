@@ -2,7 +2,7 @@
 import RestClient = require("TFS/Build/RestClient");
 import Mustache = require("mustache");
 import { Element } from "./element";
-import { Build, BuildResult } from "TFS/Build/Contracts";
+import { Build, BuildResult, BuildStatus } from "TFS/Build/Contracts";
 
 var projectId = VSS.getWebContext().project.id;
 
@@ -14,22 +14,25 @@ async function getBuilds(): Promise<Element[]> {
         var template = await $.get("templates/build.html");
         var builds: Build[] = await client.getBuilds(projectId);
         builds.forEach(element => {
-            element["resultString"] = BuildResult[element.result];
+            if (element.status == BuildStatus.Completed) {
+                element["resultString"] = BuildResult[element.result];
+                switch (element.result) {
 
-            switch (element.result) {
+                    case BuildResult.Succeeded:
+                        element["resultStyle"] = "text-success"
+                        break;
+                    case BuildResult.PartiallySucceeded:
+                        element["resultStyle"] = "text-warning"
+                        break;
+                    case BuildResult.None:
+                    case BuildResult.Failed:
+                    case BuildResult.Canceled:
+                        element["resultStyle"] = "text-danger"
+                        break;
 
-                case BuildResult.Succeeded:
-                    element["resultStyle"] = "text-success"
-                    break;
-                case BuildResult.PartiallySucceeded:
-                    element["resultStyle"] = "text-warning"
-                    break;
-                case BuildResult.None:
-                case BuildResult.Failed:
-                case BuildResult.Canceled:
-                    element["resultStyle"] = "text-danger"
-                    break;
-
+                }
+            } else {
+                element["resultString"] = BuildStatus[element.status];
             }
 
             res.push(
