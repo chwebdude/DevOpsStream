@@ -115,7 +115,7 @@ async function render() {
     var elements: Element[] = [];
 
     results.forEach(element => {
-        element = element.concat(element);
+        elements = elements.concat(element);
     });
 
 
