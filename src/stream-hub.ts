@@ -105,6 +105,7 @@ async function getWork(): Promise<Element[]> {
 async function render() {
     var builds = await getBuilds();
     var work = await getWork();
+    console.log("work elements", work);
     var template = await $.get("templates/element.html");
 
     // Combine data
