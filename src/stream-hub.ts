@@ -93,7 +93,7 @@ async function getWork(): Promise<Element[]> {
 
                     // Todo: Check this for linked items
                     if (el.date.getFullYear() == 9999 && u.fields["System.ChangedDate"].newValue != undefined) {
-                        el.date = <Date>u.fields["System.ChangedDate"].newValue;
+                        el.date = new Date(u.fields["System.ChangedDate"].newValue);
                     }
 
                     res.push(el);
