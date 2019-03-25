@@ -66,28 +66,34 @@ async function getWork(): Promise<Element[]> {
 
         console.log("work items", wi);
         wi.values.forEach(async w => {
-            var updates = await client.getUpdates(w.id);
-            console.log("updates", updates);
+            if (w.fields["System.IsDeleted"]) {
 
-            updates.forEach(u => {
-                var el: Element = {
-                    action: "",
-                    additionalInfo: "",
-                    date: u.revisedDate,
-                    user: u.revisedBy.displayName,
-                    imageUrl: u.revisedBy.imageUrl
-                };
+            } else {
 
-                if (u.rev == 1) {
-                    // First revision -> new WorkItem
-                    el.action = "New Workitem";
-                } else {
-                    // Work item updated
-                    el.action = "Workitem updated"
-                }
 
-                res.push(el);
-            });
+                var updates = await client.getUpdates(w.id);
+                console.log("updates", updates);
+
+                updates.forEach(u => {
+                    var el: Element = {
+                        action: "",
+                        additionalInfo: "",
+                        date: u.revisedDate,
+                        user: u.revisedBy.displayName,
+                        imageUrl: u.revisedBy.imageUrl
+                    };
+
+                    if (u.rev == 1) {
+                        // First revision -> new WorkItem
+                        el.action = "New Workitem";
+                    } else {
+                        // Work item updated
+                        el.action = "Workitem updated"
+                    }
+
+                    res.push(el);
+                });
+            }
         });
     } catch (error) {
         console.log(error);
@@ -112,7 +118,6 @@ async function render() {
 
     // Show data
     $("#target").html(html);
-    console.log(html);
 
     setTimeout(() => {
         render();
