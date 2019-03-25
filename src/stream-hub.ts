@@ -5,7 +5,6 @@ import Mustache = require("mustache");
 import { Element } from "./element";
 import { Build, BuildResult, BuildStatus } from "TFS/Build/Contracts";
 import { ReportingRevisionsExpand } from "TFS/WorkItemTracking/Contracts";
-import { reject, async } from "q";
 
 var projectId = VSS.getWebContext().project.id;
 
@@ -60,7 +59,7 @@ async function getWork(): Promise<Element[]> {
     var client = RestClientWit.getClient();
 
     try {
-        client.readReportingRevisionsGet(projectId, undefined, undefined, undefined, undefined// todo: daterange,
+        await client.readReportingRevisionsGet(projectId, undefined, undefined, undefined, undefined// todo: daterange,
             , undefined, true, false, true, ReportingRevisionsExpand.None, undefined, 200)
             .then(async wi => {
                 console.log("work items", wi);
@@ -115,7 +114,7 @@ async function getResults(): Promise<Element[][]> {
     var work = getWork();
 
     var builds = getBuilds();
-    return [ await work, await builds];    
+    return [await work, await builds];
 }
 
 function render() {
