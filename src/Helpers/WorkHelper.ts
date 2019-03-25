@@ -3,6 +3,8 @@ import RestClientWit = require("TFS/WorkItemTracking/RestClient");
 import { ReportingRevisionsExpand } from "TFS/WorkItemTracking/Contracts";
 import { Element } from "../element";
 import Mustache from "mustache";
+import { VssConnection } from "VSS/Service";
+import { ReviewResourceType } from "VSS/Gallery/Contracts";
 
 var projectId = VSS.getWebContext().project.id;
 
@@ -25,8 +27,9 @@ export class WorkHelper implements IHelper {
                         var el: Element = {
                             action: "",
                             additionalInfo: Mustache.render(template, {
-                                Revision: rev,
-                                Update: u
+                                id: rev.id,
+                                title: rev.fields["System.Title"],
+                                link: "https://" + VSS.getWebContext().host + "/" + VSS.getWebContext().collection + "/_workitems/edit/" + rev.id
                             }),
                             date: u.revisedDate,
                             user: u.revisedBy.displayName,
