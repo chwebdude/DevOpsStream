@@ -77,7 +77,7 @@ async function getWork(): Promise<Element[]> {
                 updates.forEach(u => {
                     var el: Element = {
                         action: "",
-                        additionalInfo: "",
+                        additionalInfo: "wi id:" + u.workItemId + "- rev: " + u.rev,
                         date: u.revisedDate,
                         user: u.revisedBy.displayName,
                         imageUrl: u.revisedBy.imageUrl
@@ -92,7 +92,7 @@ async function getWork(): Promise<Element[]> {
                     }
 
                     // Todo: Check this for linked items
-                    if(el.date.getFullYear() == 9999 && u.fields["System.ChangedDate"].newValue != undefined){
+                    if (el.date.getFullYear() == 9999 && u.fields["System.ChangedDate"].newValue != undefined) {
                         el.date = u.fields["System.ChangedDate"].newValue;
                     }
 
@@ -115,7 +115,7 @@ async function render() {
 
     // Combine data
     var elements = builds.concat(work);
-    console.info("elements "+ elements.length, elements);
+    console.info("elements " + elements.length, elements);
 
     // Sort data
     elements.sort((a, b) => {
