@@ -29,7 +29,7 @@ export class WorkHelper implements IHelper {
                             additionalInfo: Mustache.render(template, {
                                 id: rev.id,
                                 title: rev.fields["System.Title"],
-                                link: "https://" + VSS.getWebContext().host + "/" + VSS.getWebContext().collection + "/_workitems/edit/" + rev.id
+                                link: VSS.getWebContext().host.uri + "/_workitems/edit/" + rev.id
                             }),
                             date: u.revisedDate,
                             user: u.revisedBy.displayName,
