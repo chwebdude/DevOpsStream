@@ -2,29 +2,32 @@ import { IHelper } from "./IHelper";
 import RestClientWit = require("TFS/WorkItemTracking/RestClient");
 import { ReportingRevisionsExpand } from "TFS/WorkItemTracking/Contracts";
 import { Element } from "../element";
+import Mustache from "mustache";
 
 var projectId = VSS.getWebContext().project.id;
 
 export class WorkHelper implements IHelper {
     async getElements(): Promise<Element[]> {
+        var template = await $.get("templates/work.html");
         var res: Element[] = [];
         var client = RestClientWit.getClient();
         try {
             var wi = await client.readReportingRevisionsGet(projectId, undefined, undefined, undefined, undefined // todo: daterange,
                 , undefined, true, false, true, ReportingRevisionsExpand.None, undefined, 200);
 
-            console.log("work items", wi);
-            for (const w of wi.values) {
-                if (w.fields["System.IsDeleted"]) {
-                    console.log("Is deleted", w);
+            for (const rev of wi.values) {
+                if (rev.fields["System.IsDeleted"]) {
+                    console.log("Is deleted", rev);
                 }
                 else {
-                    var updates = await client.getUpdates(w.id);
-                    // console.log("updates", updates);
+                    var updates = await client.getUpdates(rev.id);
                     updates.forEach(u => {
                         var el: Element = {
                             action: "",
-                            additionalInfo: "wi id:" + u.workItemId + "- rev: " + u.rev,
+                            additionalInfo: Mustache.render(template, {
+                                Revision: rev,
+                                Update: u
+                            }),
                             date: u.revisedDate,
                             user: u.revisedBy.displayName,
                             imageUrl: u.revisedBy.imageUrl

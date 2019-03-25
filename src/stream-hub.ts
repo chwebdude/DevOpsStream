@@ -15,17 +15,12 @@ async function getResults(): Promise<Element[][]> {
 async function render() {
     var elementTemplate = await $.get("templates/element.html");
     var results = await getResults();
-
-    console.log("results", results);
-
     var elements: Element[] = [];
 
     // Combine data
     results.forEach(element => {
         elements = elements.concat(element);
     });
-
-    console.info("elements " + elements.length, elements);
 
     // Sort data
     elements.sort((a, b) => {
