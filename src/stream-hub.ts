@@ -113,7 +113,7 @@ async function render() {
 
     // Sort data
     elements.sort((a, b) => {
-        return a.date.getTime() - b.date.getTime()
+        return b.date.getTime() - a.date.getTime()
     });
 
     // Generate output
