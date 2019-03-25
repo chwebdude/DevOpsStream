@@ -113,6 +113,10 @@ async function render() {
     // Show data
     $("#target").html(html);
     console.log(html);
+
+    setTimeout(() => {
+        render();
+    }, 20000);
 }
 render();
 
