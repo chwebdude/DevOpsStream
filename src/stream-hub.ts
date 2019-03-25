@@ -112,9 +112,10 @@ async function getWork(): Promise<Element[]> {
 }
 
 async function getResults(): Promise<Element[][]> {
-    var builds = getBuilds();
     var work = getWork();
-    return [await builds, await work];    
+
+    var builds = getBuilds();
+    return [ await work, await builds];    
 }
 
 function render() {
