@@ -107,11 +107,17 @@ async function render() {
     var work = await getWork();
     var template = await $.get("templates/element.html");
 
-    // Todo: Sort data
+    // Combine data
+    var elements = builds.concat(work);
+
+    // Sort data
+    elements.sort((a, b) => {
+        return a.date.getTime() - b.date.getTime()
+    });
 
     // Generate output
     var html = "";
-    builds.forEach((el: any) => {
+    elements.forEach((el: any) => {
         el["dateStr"] = el.date.toLocaleDateString() + " " + el.date.toLocaleTimeString();
         html += Mustache.render(template, el);
     });
