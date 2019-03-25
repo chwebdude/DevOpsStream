@@ -127,7 +127,7 @@ async function render() {
 
     setTimeout(() => {
         render();
-    }, 20000);
+    }, 5000);
 }
 render();
 
