@@ -91,7 +91,8 @@ async function getWork(): Promise<Element[]> {
                         el.action = "Workitem updated"
                     }
 
-                    if(el.date.getFullYear() == 9999){
+                    // Todo: Check this for linked items
+                    if(el.date.getFullYear() == 9999 && u.fields["System.RevisedDate"].oldValue != undefined){
                         el.date = u.fields["System.RevisedDate"].oldValue;
                     }
 
