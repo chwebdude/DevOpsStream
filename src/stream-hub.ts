@@ -57,48 +57,51 @@ async function getBuilds(): Promise<Element[]> {
 
 async function getWork(): Promise<Element[]> {
     var res: Element[] = [];
-    var client = await RestClientWit.getClient();
+    var client = RestClientWit.getClient();
 
     try {
-        var wi = await client.readReportingRevisionsGet(projectId, undefined, undefined, undefined, undefined// todo: daterange,
-            , undefined, true, false, true, ReportingRevisionsExpand.None, undefined, 200);
-
-        console.log("work items", wi);
-        wi.values.forEach(async w => {
-            if (w.fields["System.IsDeleted"]) {
-                console.log("Is deleted", w);
-            } else {
-
-
-                var updates = await client.getUpdates(w.id);
-                console.log("updates", updates);
-
-                updates.forEach(u => {
-                    var el: Element = {
-                        action: "",
-                        additionalInfo: "wi id:" + u.workItemId + "- rev: " + u.rev,
-                        date: u.revisedDate,
-                        user: u.revisedBy.displayName,
-                        imageUrl: u.revisedBy.imageUrl
-                    };
-
-                    if (u.rev == 1) {
-                        // First revision -> new WorkItem
-                        el.action = "New Workitem";
+        client.readReportingRevisionsGet(projectId, undefined, undefined, undefined, undefined// todo: daterange,
+            , undefined, true, false, true, ReportingRevisionsExpand.None, undefined, 200)
+            .then(wi => {
+                console.log("work items", wi);
+                wi.values.forEach(async w => {
+                    if (w.fields["System.IsDeleted"]) {
+                        console.log("Is deleted", w);
                     } else {
-                        // Work item updated
-                        el.action = "Workitem updated"
-                    }
 
-                    // Todo: Check this for linked items
-                    if (el.date.getFullYear() == 9999 && u.fields["System.ChangedDate"].newValue != undefined) {
-                        el.date = new Date(u.fields["System.ChangedDate"].newValue);
-                    }
 
-                    res.push(el);
+                        var updates = await client.getUpdates(w.id);
+                        console.log("updates", updates);
+
+                        updates.forEach(u => {
+                            var el: Element = {
+                                action: "",
+                                additionalInfo: "wi id:" + u.workItemId + "- rev: " + u.rev,
+                                date: u.revisedDate,
+                                user: u.revisedBy.displayName,
+                                imageUrl: u.revisedBy.imageUrl
+                            };
+
+                            if (u.rev == 1) {
+                                // First revision -> new WorkItem
+                                el.action = "New Workitem";
+                            } else {
+                                // Work item updated
+                                el.action = "Workitem updated"
+                            }
+
+                            // Todo: Check this for linked items
+                            if (el.date.getFullYear() == 9999 && u.fields["System.ChangedDate"].newValue != undefined) {
+                                el.date = new Date(u.fields["System.ChangedDate"].newValue);
+                            }
+
+                            res.push(el);
+                        });
+                    }
                 });
-            }
-        });
+            });
+
+
     } catch (error) {
         console.log(error);
     }
@@ -111,39 +114,41 @@ async function getResults(): Promise<Element[][]> {
 }
 
 function render() {
+    getTemplates().then(() => {
 
-    getResults().then(results => {
 
-        var elements: Element[] = [];
+        getResults().then(results => {
 
-        // Combine data
-        results.forEach(element => {
-            elements = elements.concat(element);
+            var elements: Element[] = [];
+
+            // Combine data
+            results.forEach(element => {
+                elements = elements.concat(element);
+            });
+
+            console.info("elements " + elements.length, elements);
+
+            // Sort data
+            elements.sort((a, b) => {
+                return b.date.getTime() - a.date.getTime()
+            });
+
+            // Generate output
+            var html = "";
+            elements.forEach((el: any) => {
+                el["dateStr"] = el.date.toLocaleDateString() + " " + el.date.toLocaleTimeString();
+                html += Mustache.render(elementTemplate, el);
+            });
+
+            // Show data
+            $("#target").html(html);
+
+            setTimeout(() => {
+                render();
+            }, 5000);
         });
 
-        console.info("elements " + elements.length, elements);
-
-        // Sort data
-        elements.sort((a, b) => {
-            return b.date.getTime() - a.date.getTime()
-        });
-
-        // Generate output
-        var html = "";
-        elements.forEach((el: any) => {
-            el["dateStr"] = el.date.toLocaleDateString() + " " + el.date.toLocaleTimeString();
-            html += Mustache.render(elementTemplate, el);
-        });
-
-        // Show data
-        $("#target").html(html);
-
-        setTimeout(() => {
-            render();
-        }, 5000);
     });
-
-
 }
 
 async function getTemplates() {
@@ -152,7 +157,6 @@ async function getTemplates() {
 
 }
 
-getTemplates();
 render();
 
 var elementTemplate: string;
