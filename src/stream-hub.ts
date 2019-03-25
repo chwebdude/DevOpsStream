@@ -107,7 +107,7 @@ async function getWork(): Promise<Element[]> {
 }
 
 async function getResults(): Promise<Element[][]> {
-    return await Promise.all([getBuilds(), await getWork()]);
+    return await Promise.all([getBuilds(), getWork()]);
 }
 
 function render() {
