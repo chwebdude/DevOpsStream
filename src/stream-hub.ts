@@ -64,7 +64,7 @@ async function getWork(): Promise<Element[]> {
             , undefined, true, false, true, ReportingRevisionsExpand.None, undefined, 200)
             .then(wi => {
                 console.log("work items", wi);
-                asyncForEach(wi.values, async w => {
+                asyncForEach(wi.values, async (w) => {
                     if (w.fields["System.IsDeleted"]) {
                         console.log("Is deleted", w);
                     } else {
