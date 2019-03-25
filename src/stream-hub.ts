@@ -5,7 +5,7 @@ import Mustache = require("mustache");
 import { Element } from "./element";
 import { Build, BuildResult, BuildStatus } from "TFS/Build/Contracts";
 import { ReportingRevisionsExpand } from "TFS/WorkItemTracking/Contracts";
-import { reject } from "q";
+import { reject, async } from "q";
 
 var projectId = VSS.getWebContext().project.id;
 
@@ -108,24 +108,21 @@ async function getWork(): Promise<Element[]> {
     return res;
 }
 
-async function render() {
+async function getResults() {
+    return await Promise.all([getBuilds(), await getWork()]);
+}
 
-    var results = [await getBuilds(), await getWork()];
+async function render() {
 
     var elements: Element[] = [];
 
+    var results = await getResults();
+      // Combine data
     results.forEach(element => {
         elements = elements.concat(element);
     });
 
-
-    // var builds = await getBuilds();
-    // var work = await getWork();
-    // console.log("work elements", work);
-    var template = await $.get("templates/element.html");
-
-    // Combine data
-    // var elements = builds.concat(work);
+    var template = await $.get("templates/element.html");    
     console.info("elements " + elements.length, elements);
 
     // Sort data
