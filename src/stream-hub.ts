@@ -120,6 +120,7 @@ function render() {
 
 
         getResults().then(results => {
+            console.log("results", results);
 
             var elements: Element[] = [];
 
