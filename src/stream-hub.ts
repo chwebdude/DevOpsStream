@@ -91,6 +91,10 @@ async function getWork(): Promise<Element[]> {
                         el.action = "Workitem updated"
                     }
 
+                    if(el.date.getFullYear() == 9999){
+                        el.date = u.fields["System.RevisedDate"].oldValue;
+                    }
+
                     res.push(el);
                 });
             }
