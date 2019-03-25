@@ -64,7 +64,7 @@ async function getWork(): Promise<Element[]> {
             , undefined, true, false, true, ReportingRevisionsExpand.None, undefined, 200)
             .then(wi => {
                 console.log("work items", wi);
-                wi.values.forEach(async w => {
+                asyncForEach(wi.values, async w => {
                     if (w.fields["System.IsDeleted"]) {
                         console.log("Is deleted", w);
                     } else {
@@ -99,6 +99,7 @@ async function getWork(): Promise<Element[]> {
                         });
                     }
                 });
+
             });
 
 
@@ -161,3 +162,9 @@ render();
 
 var elementTemplate: string;
 var buildTemplate: string;
+
+async function asyncForEach<T>(array: T[], callback: (value: T, index: number, array: T[]) => void) {
+    for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+    }
+}
