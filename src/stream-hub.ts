@@ -62,7 +62,7 @@ async function getWork(): Promise<Element[]> {
     try {
         client.readReportingRevisionsGet(projectId, undefined, undefined, undefined, undefined// todo: daterange,
             , undefined, true, false, true, ReportingRevisionsExpand.None, undefined, 200)
-            .then(await wi => {
+            .then(async wi => {
                 console.log("work items", wi);
                 for (const w of wi.values) {
                     if (w.fields["System.IsDeleted"]) {
