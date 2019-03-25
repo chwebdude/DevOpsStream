@@ -55,18 +55,39 @@ async function getBuilds(): Promise<Element[]> {
     return res;
 }
 
-async function getTasks(): Promise<Element[]> {
+async function getWork(): Promise<Element[]> {
     var res: Element[] = [];
     var client = RestClientWit.getClient();
 
     try {
+        var template = await $.get("templates/work.html");
         var wi = await client.readReportingRevisionsGet(projectId, undefined, undefined, undefined, undefined// todo: daterange,
             , undefined, true, false, true, ReportingRevisionsExpand.None, undefined, 200);
 
         console.log("work items", wi);
-        wi.values.forEach(w => {
-            var updates = client.getUpdates(w.id);
+        wi.values.forEach(async w => {
+            var updates = await client.getUpdates(w.id);
             console.log("updates", updates);
+
+            updates.forEach(u => {
+                var el: Element = {
+                    action: "",
+                    additionalInfo: "",
+                    date: u.revisedDate,
+                    user: u.revisedBy.displayName,
+                    imageUrl: u.revisedBy.imageUrl
+                };
+
+                if (u.rev == 1) {
+                    // First revision -> new WorkItem
+                    el.action = "New Workitem";
+                } else {
+                    // Work item updated
+                    el.action = "Workitem updated"
+                }
+
+                res.push(el);
+            });
         });
     } catch (error) {
         console.log(error);
@@ -77,6 +98,7 @@ async function getTasks(): Promise<Element[]> {
 
 async function render() {
     var builds = await getBuilds();
+    var work = await getWork();
     var template = await $.get("templates/element.html");
 
     // Todo: Sort data
