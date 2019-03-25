@@ -115,6 +115,7 @@ async function render() {
 
     // Combine data
     var elements = builds.concat(work);
+    console.info("elements "+ elements.length, elements);
 
     // Sort data
     elements.sort((a, b) => {
