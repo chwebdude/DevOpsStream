@@ -5,6 +5,7 @@ import Mustache = require("mustache");
 import { Element } from "./element";
 import { Build, BuildResult, BuildStatus } from "TFS/Build/Contracts";
 import { ReportingRevisionsExpand } from "TFS/WorkItemTracking/Contracts";
+import { reject } from "q";
 
 var projectId = VSS.getWebContext().project.id;
 
@@ -57,7 +58,7 @@ async function getBuilds(): Promise<Element[]> {
 
 async function getWork(): Promise<Element[]> {
     var res: Element[] = [];
-    var client = RestClientWit.getClient();
+    var client = await RestClientWit.getClient();
 
     try {
         var template = await $.get("templates/work.html");
@@ -67,7 +68,7 @@ async function getWork(): Promise<Element[]> {
         console.log("work items", wi);
         wi.values.forEach(async w => {
             if (w.fields["System.IsDeleted"]) {
-
+                console.log("Is deleted", w);
             } else {
 
 
@@ -108,13 +109,23 @@ async function getWork(): Promise<Element[]> {
 }
 
 async function render() {
-    var builds = await getBuilds();
-    var work = await getWork();
-    console.log("work elements", work);
+
+    var results = await Promise.all([getBuilds(), getWork()]);
+
+    var elements: Element[] = [];
+
+    results.forEach(element => {
+        element = element.concat(element);
+    });
+
+
+    // var builds = await getBuilds();
+    // var work = await getWork();
+    // console.log("work elements", work);
     var template = await $.get("templates/element.html");
 
     // Combine data
-    var elements = builds.concat(work);
+    // var elements = builds.concat(work);
     console.info("elements " + elements.length, elements);
 
     // Sort data
