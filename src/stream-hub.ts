@@ -64,7 +64,7 @@ async function getWork(): Promise<Element[]> {
             , undefined, true, false, true, ReportingRevisionsExpand.None, undefined, 200)
             .then(wi => {
                 console.log("work items", wi);
-                asyncForEach(wi.values, async (w) => {
+                for (const w of wi.values) {
                     if (w.fields["System.IsDeleted"]) {
                         console.log("Is deleted", w);
                     } else {
@@ -98,7 +98,8 @@ async function getWork(): Promise<Element[]> {
                             res.push(el);
                         });
                     }
-                });
+                }
+
 
             });
 
@@ -162,9 +163,3 @@ render();
 
 var elementTemplate: string;
 var buildTemplate: string;
-
-async function asyncForEach<T>(array: T[], callback: (value: T, index: number, array: T[]) => void) {
-    for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array);
-    }
-}
