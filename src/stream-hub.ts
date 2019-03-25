@@ -71,7 +71,7 @@ async function getWork(): Promise<Element[]> {
 
 
                         var updates = await client.getUpdates(w.id);
-                        console.log("updates", updates);
+                        // console.log("updates", updates);
 
                         updates.forEach(u => {
                             var el: Element = {
