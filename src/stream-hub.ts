@@ -14,7 +14,6 @@ async function getBuilds(): Promise<Element[]> {
     var res: Element[] = [];
     var client = RestClientBuild.getClient();
     try {
-        var template = await $.get("templates/build.html");
         var builds: Build[] = await client.getBuilds(projectId);
         builds.forEach(element => {
             if (element.status == BuildStatus.Completed) {
@@ -44,7 +43,7 @@ async function getBuilds(): Promise<Element[]> {
                     date: element.lastChangedDate,
                     imageUrl: element.requestedBy.imageUrl,
                     user: element.requestedBy.displayName,
-                    additionalInfo: Mustache.render(template, element)
+                    additionalInfo: Mustache.render(buildTemplate, element)
                 }
             );
         });
@@ -61,7 +60,6 @@ async function getWork(): Promise<Element[]> {
     var client = await RestClientWit.getClient();
 
     try {
-        var template = await $.get("templates/work.html");
         var wi = await client.readReportingRevisionsGet(projectId, undefined, undefined, undefined, undefined// todo: daterange,
             , undefined, true, false, true, ReportingRevisionsExpand.None, undefined, 200);
 
@@ -108,41 +106,54 @@ async function getWork(): Promise<Element[]> {
     return res;
 }
 
-async function getResults() {
+async function getResults(): Promise<Element[][]> {
     return await Promise.all([getBuilds(), await getWork()]);
 }
 
-async function render() {
+function render() {
 
-    var elements: Element[] = [];
+    getResults().then(results => {
 
-    var results = await getResults();
-      // Combine data
-    results.forEach(element => {
-        elements = elements.concat(element);
+        var elements: Element[] = [];
+
+        // Combine data
+        results.forEach(element => {
+            elements = elements.concat(element);
+        });
+
+        console.info("elements " + elements.length, elements);
+
+        // Sort data
+        elements.sort((a, b) => {
+            return b.date.getTime() - a.date.getTime()
+        });
+
+        // Generate output
+        var html = "";
+        elements.forEach((el: any) => {
+            el["dateStr"] = el.date.toLocaleDateString() + " " + el.date.toLocaleTimeString();
+            html += Mustache.render(elementTemplate, el);
+        });
+
+        // Show data
+        $("#target").html(html);
+
+        setTimeout(() => {
+            render();
+        }, 5000);
     });
 
-    var template = await $.get("templates/element.html");    
-    console.info("elements " + elements.length, elements);
 
-    // Sort data
-    elements.sort((a, b) => {
-        return b.date.getTime() - a.date.getTime()
-    });
-
-    // Generate output
-    var html = "";
-    elements.forEach((el: any) => {
-        el["dateStr"] = el.date.toLocaleDateString() + " " + el.date.toLocaleTimeString();
-        html += Mustache.render(template, el);
-    });
-
-    // Show data
-    $("#target").html(html);
-
-    setTimeout(() => {
-        render();
-    }, 5000);
 }
+
+async function getTemplates() {
+    elementTemplate = await $.get("templates/element.html");
+    buildTemplate = await $.get("templates/build.html");
+
+}
+
+getTemplates();
 render();
 
+var elementTemplate: string;
+var buildTemplate: string;
