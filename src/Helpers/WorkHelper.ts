@@ -31,7 +31,8 @@ export class WorkHelper implements IHelper {
                             updated: "",
                             assignedTo: "",
                             oldState: "",
-                            newState: ""
+                            newState: "",
+                            oldTitle: "",
                         }
 
 
@@ -44,23 +45,29 @@ export class WorkHelper implements IHelper {
                             // Work item updated
                             renderInfo.action = "Workitem updated";
 
-                            if (u.fields["System.Description"]) {
-                                renderInfo.updated = "Description"
-                            }
+                            // If field change
+                            if (u.fields != undefined) {
+                                if (u.fields["System.Description"]) {
+                                    renderInfo.updated = "Description"
+                                }
 
-                            if (u.fields["System.AssignedTo"]) {
-                                if (u.fields["AssignedTo"].newValue["displayName"]) {
-                                    renderInfo.assignedTo = u.fields["AssignedTo"].newValue["displayName"];
-                                } else {
-                                    renderInfo.assignedTo = "nobody"; // unassign
+                                if (u.fields["System.AssignedTo"]) {
+                                    if (u.fields["AssignedTo"].newValue["displayName"]) {
+                                        renderInfo.assignedTo = u.fields["AssignedTo"].newValue["displayName"];
+                                    } else {
+                                        renderInfo.assignedTo = "nobody"; // unassign
+                                    }
+                                }
+
+                                if (u.fields["System.State"]) {
+                                    renderInfo.oldState = u.fields["System.State"].oldValue;
+                                    renderInfo.newState = u.fields["System.State"].newValue;
+                                }
+
+                                if (u.fields["System.Title"]) {
+                                    renderInfo.oldTitle = u.fields["System.Title"].oldValue;
                                 }
                             }
-
-                            if (u.fields["System.State"]) {
-                                renderInfo.oldState = u.fields["System.State"].oldValue;
-                                renderInfo.newState = u.fields["System.State"].newValue;
-                            }
-
                         }
 
 
