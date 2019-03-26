@@ -52,8 +52,10 @@ export class WorkHelper implements IHelper {
                                 }
 
                                 if (u.fields["System.AssignedTo"]) {
-                                    if (u.fields["AssignedTo"].newValue["displayName"]) {
+                                    if (u.fields["AssignedTo"].newValue && u.fields["AssignedTo"].newValue["displayName"] != undefined) {
                                         renderInfo.assignedTo = u.fields["AssignedTo"].newValue["displayName"];
+                                    } else if (u.fields["AssignedTo"].newValue) {
+                                        renderInfo.assignedTo = u.fields["AssignedTo"].newValue;
                                     } else {
                                         renderInfo.assignedTo = "nobody"; // unassign
                                     }
